@@ -1,72 +1,172 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
-
+import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.jar.Manifest;
+import java.util.ArrayList;
 
+public class MainActivity extends Activity {
 
-public class MainActivity extends AppCompatActivity {
+    MyCustomAdapter dataAdapter = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Generate list View from ArrayList
+        displayListView();
+
+        checkButtonClick();
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    private void displayListView() {
+
+        //Array list of countries
+        ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("whiskey"));
+
+        //create an ArrayAdapter from the String Array
+        dataAdapter = new MyCustomAdapter(this,
+                R.layout.activity_main, ingredientList);
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        // Assign adapter to ListView
+        listView.setAdapter(dataAdapter);
+
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // When clicked, show a toast with the TextView text
+                Ingredient item = (Ingredient) parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(),
+                        "Clicked on Row: " + item,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    private class MyCustomAdapter extends ArrayAdapter<Ingredient> {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        private ArrayList<Ingredient> ingredientList;
+
+        public MyCustomAdapter(Context context, int textViewResourceId,
+                               ArrayList<Ingredient> ingredientList) {
+            super(context, textViewResourceId, ingredientList);
+            this.ingredientList = new ArrayList<Ingredient>();
+            this.ingredientList.addAll(ingredientList);
         }
 
-        return super.onOptionsItemSelected(item);
+        private class ViewHolder {
+            TextView code;
+            CheckBox name;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            ViewHolder holder = null;
+            Log.v("ConvertView", String.valueOf(position));
+
+            if (convertView == null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                convertView = vi.inflate(R.layout.ingredient_layout, null);
+
+                holder = new ViewHolder();
+                holder.code = (TextView) convertView.findViewById(R.id.code);
+                holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                convertView.setTag(holder);
+
+                holder.name.setOnClickListener( new View.OnClickListener() {
+                    public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v ;
+                        Ingredient item = (Ingredient) cb.getTag();
+                        Toast.makeText(getApplicationContext(),
+                                "Clicked on Checkbox: " + cb.getText() +
+                                        " is " + cb.isChecked(),
+                                Toast.LENGTH_LONG).show();
+                        item.setSelected(cb.isChecked());
+                    }
+                });
+            }
+            else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            Ingredient item = ingredientList.get(position);
+            holder.code.setText(" (" +  item + ")");
+            holder.name.setText(item.getName());
+            holder.name.setChecked(item.isSelected());
+            holder.name.setTag(item);
+
+            return convertView;
+
+        }
+
     }
 
-    public void displayIngredient(View view) {
-
-        EditText nameEditText = (EditText)findViewById(R.id.editText);
-        TextView returnDisplay = (TextView)findViewById(R.id.returnText);
-
-        returnDisplay.setText(nameEditText.getText());
-        TextView gpsLat = (TextView)findViewById(R.id.gpsLocationLatitude);
-        TextView gpsLong = (TextView)findViewById(R.id.gpsLocationLongitude);
+    private void checkButtonClick() {
 
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        Button myButton = (Button) findViewById(R.id.findSelected);
+        myButton.setOnClickListener(new OnClickListener() {
 
-         Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-            gpsLat.setText("Your latitude is " + lastKnownLocation.getLatitude());
-            gpsLong.setText("Your longitude is " + lastKnownLocation.getLongitude());
+            @Override
+            public void onClick(View v) {
 
+                StringBuffer responseText = new StringBuffer();
+                responseText.append("The following were selected...\n");
 
+                ArrayList<Ingredient> ingredientList = dataAdapter.ingredientList;
+                for(int i=0;i<ingredientList.size();i++){
+                    Ingredient item = ingredientList.get(i);
+                    if(item.isSelected()){
+                        responseText.append("\n" + item.getName());
+                    }
+                }
 
+                Toast.makeText(getApplicationContext(),
+                        responseText, Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
+
 }
