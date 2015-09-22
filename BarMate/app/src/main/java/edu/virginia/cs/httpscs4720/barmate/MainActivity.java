@@ -2,6 +2,7 @@ package edu.virginia.cs.httpscs4720.barmate;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,13 +16,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
     MyCustomAdapter dataAdapter = null;
+    boolean partialCheck;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,26 +40,10 @@ public class MainActivity extends Activity {
 
         //Array list of countries
         ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
-        ingredientList.add(new Ingredient("whiskey"));
+        ingredientList.add(new Ingredient("Whiskey"));
+        ingredientList.add(new Ingredient("Coca Cola"));
+        ingredientList.add(new Ingredient("Sprite"));
+        ingredientList.add(new Ingredient("Lime"));
 
         //create an ArrayAdapter from the String Array
         dataAdapter = new MyCustomAdapter(this,
@@ -73,9 +58,9 @@ public class MainActivity extends Activity {
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Ingredient item = (Ingredient) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "Clicked on Row: " + item,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Clicked on Row: " + item,
+//                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -117,10 +102,10 @@ public class MainActivity extends Activity {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v ;
                         Ingredient item = (Ingredient) cb.getTag();
-                        Toast.makeText(getApplicationContext(),
-                                "Clicked on Checkbox: " + cb.getText() +
-                                        " is " + cb.isChecked(),
-                                Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                "Clicked on Checkbox: " + cb.getText() +
+//                                        " is " + cb.isChecked(),
+//                                Toast.LENGTH_LONG).show();
                         item.setSelected(cb.isChecked());
                     }
                 });
@@ -130,7 +115,7 @@ public class MainActivity extends Activity {
             }
 
             Ingredient item = ingredientList.get(position);
-            holder.code.setText(" (" +  item + ")");
+            holder.code.setText("");
             holder.name.setText(item.getName());
             holder.name.setChecked(item.isSelected());
             holder.name.setTag(item);
@@ -139,6 +124,10 @@ public class MainActivity extends Activity {
 
         }
 
+    }
+
+    public void onCheckboxClicked (View view) {
+        partialCheck = ((CheckBox) view).isChecked();
     }
 
     private void checkButtonClick() {
@@ -150,19 +139,44 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                StringBuffer responseText = new StringBuffer();
-                responseText.append("The following were selected...\n");
+
+                Intent intent;
+                intent = new Intent(MainActivity.this, lookup_results.class);
+
 
                 ArrayList<Ingredient> ingredientList = dataAdapter.ingredientList;
-                for(int i=0;i<ingredientList.size();i++){
+                ArrayList<String> selections = new ArrayList<>();
+
+
+                for (int i = 0; i < ingredientList.size(); i++) {
                     Ingredient item = ingredientList.get(i);
-                    if(item.isSelected()){
-                        responseText.append("\n" + item.getName());
+                    if (item.isSelected()) {
+                        selections.add(item.getName());
                     }
                 }
 
-                Toast.makeText(getApplicationContext(),
-                        responseText, Toast.LENGTH_LONG).show();
+                intent.putStringArrayListExtra("selections", selections);
+//                if (R.id.partialSelections ) {
+//                    intent.putExtra("partial", true);
+//                }
+//                else {
+//                    intent.putExtra("partial", false);
+//                }
+
+                startActivity(intent);
+
+//                StringBuffer responseText = new StringBuffer();
+//                responseText.append("The following were selected...\n");
+//
+//                for(int i=0;i<ingredientList.size();i++){
+//                    Ingredient item = ingredientList.get(i);
+//                    if(item.isSelected()){
+//                        responseText.append("\n" + item.getName());
+//                    }
+//                }
+//
+//                Toast.makeText(getApplicationContext(),
+//                        responseText, Toast.LENGTH_LONG).show();
 
             }
         });

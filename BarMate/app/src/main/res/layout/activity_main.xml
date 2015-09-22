@@ -4,18 +4,34 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:padding="10dp"
-        android:text="BarMate" android:textSize="20sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select your ingredients"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="40dp" />
+
+    <ListView android:id="@+id/listView1" android:layout_width="fill_parent"
+        android:layout_height="583dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Include partial results"
+        android:id="@+id/partialSelections"
+        android:checked="false"
+        android:layout_gravity="left"
+        android:layout_marginLeft="20dp"
+        android:onClick="onCheckboxClicked"/>
 
     <Button
         android:id="@+id/findSelected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Generate cocktails" />
-
-    <ListView android:id="@+id/listView1" android:layout_width="fill_parent"
-        android:layout_height="645dp" />
+        android:text="Generate cocktails"
+        android:layout_margin="20dp" />
 
 </LinearLayout>
