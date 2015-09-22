@@ -26,11 +26,11 @@ public class lookup_results extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list_results);
 
         Bundle bundle = getIntent().getExtras();
-        //boolean partial = bundle.getBoolean("partial");
+        boolean partial = bundle.getBoolean("partial");
 
         ArrayList<String> results = new ArrayList<>();
         if (bundle.getStringArrayList("selections") != null && !bundle.getStringArrayList("selections").isEmpty()) {
-            results = possibleRecipes(bundle.getStringArrayList("selections"));
+            results = possibleRecipes(bundle.getStringArrayList("selections"), partial);
         }
         else {
             results.add("No matches, try again?");
@@ -63,38 +63,49 @@ public class lookup_results extends AppCompatActivity {
     }
 
 
-    public ArrayList<String> possibleRecipes(ArrayList<String> ingredients) {
+    public ArrayList<String> possibleRecipes(ArrayList<String> ingredients, boolean partial) {
         String[] whiskeyandcoke = {"Whiskey", "Coca Cola"};
         String[] jackandsprite =  {"Whiskey", "Sprite", "Lime"};
         String[] names = {"Whiskey and Coke", "Jack and Sprite"};
         ArrayList<String[]> recipes = new ArrayList<>();
+        ArrayList<String> partialRecipes = new ArrayList<>();
+        ArrayList<String> possibleRecipes = new ArrayList<>();
         recipes.add(whiskeyandcoke);
         recipes.add(jackandsprite);
-        ArrayList<String> possibleRecipes = new ArrayList<>();
 
         for (int i = 0; i < recipes.size(); i++) {
             boolean validRecipe = true;
             String[] recipe = recipes.get(i);
-
+            int counter = 2;
 
             for (int j = 0; j < recipes.get(i).length; j++) {
-                boolean goodRecipe = false;
-                for(String s : ingredients) {
-                    if (s.compareTo(recipe[j]) == 0) {
-                        goodRecipe = true;
-                    }
+
+                if (ingredients.contains(recipe[j])) {
                 }
-                if (!goodRecipe) {
-                    validRecipe = false;
+                else{
+                    counter--;
                 }
+
             }
 
-            if (validRecipe) {
+            if(counter > 1){
                 String nameToAdd = names[i];
                 possibleRecipes.add(nameToAdd);
             }
+            else if(counter == 1) {
+                String nameToAdd = names[i];
+                partialRecipes.add(nameToAdd);
+            }
+
         }
-        return possibleRecipes;
+
+        if(partial){
+            possibleRecipes.addAll(partialRecipes);
+            return possibleRecipes;
+        }
+        else{
+            return possibleRecipes;
+        }
 
     }
 

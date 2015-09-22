@@ -156,12 +156,8 @@ public class MainActivity extends Activity {
                 }
 
                 intent.putStringArrayListExtra("selections", selections);
-//                if (R.id.partialSelections ) {
-//                    intent.putExtra("partial", true);
-//                }
-//                else {
-//                    intent.putExtra("partial", false);
-//                }
+                intent.putExtra("partial", partialCheck);
+
 
                 startActivity(intent);
 
