@@ -29,7 +29,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Generate list View from ArrayList
         displayListView();
 
         checkButtonClick();
@@ -38,18 +37,15 @@ public class MainActivity extends Activity {
 
     private void displayListView() {
 
-        //Array list of countries
-        ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
+        ArrayList<Ingredient> ingredientList = new ArrayList<>();
         ingredientList.add(new Ingredient("Whiskey"));
         ingredientList.add(new Ingredient("Coca Cola"));
         ingredientList.add(new Ingredient("Sprite"));
         ingredientList.add(new Ingredient("Lime"));
 
-        //create an ArrayAdapter from the String Array
         dataAdapter = new MyCustomAdapter(this,
                 R.layout.activity_main, ingredientList);
         ListView listView = (ListView) findViewById(R.id.listView1);
-        // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
 
 
@@ -73,7 +69,7 @@ public class MainActivity extends Activity {
         public MyCustomAdapter(Context context, int textViewResourceId,
                                ArrayList<Ingredient> ingredientList) {
             super(context, textViewResourceId, ingredientList);
-            this.ingredientList = new ArrayList<Ingredient>();
+            this.ingredientList = new ArrayList<>();
             this.ingredientList.addAll(ingredientList);
         }
 
@@ -131,8 +127,6 @@ public class MainActivity extends Activity {
     }
 
     private void checkButtonClick() {
-
-
         Button myButton = (Button) findViewById(R.id.findSelected);
         myButton.setOnClickListener(new OnClickListener() {
 

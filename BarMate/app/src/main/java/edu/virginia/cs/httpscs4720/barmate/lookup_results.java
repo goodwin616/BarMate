@@ -1,5 +1,8 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -60,6 +64,20 @@ public class lookup_results extends AppCompatActivity {
             }
 
         });
+
+        TextView gpsLat = (TextView)findViewById(R.id.gpsLocationLatitude);
+        TextView gpsLong = (TextView)findViewById(R.id.gpsLocationLongitude);
+
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+
+        Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+        gpsLat.setText("Your latitude is " + lastKnownLocation.getLatitude());
+        gpsLong.setText("Your longitude is " + lastKnownLocation.getLongitude());
+
+
+
     }
 
 
@@ -74,7 +92,6 @@ public class lookup_results extends AppCompatActivity {
         recipes.add(jackandsprite);
 
         for (int i = 0; i < recipes.size(); i++) {
-            boolean validRecipe = true;
             String[] recipe = recipes.get(i);
             int counter = 2;
 
