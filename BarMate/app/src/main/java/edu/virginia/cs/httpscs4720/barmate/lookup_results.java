@@ -1,8 +1,10 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class lookup_results extends AppCompatActivity {
 
     ListView listView ;
+    ArrayList<String> partialRecipes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,13 @@ public class lookup_results extends AppCompatActivity {
                 int itemPosition = position;
                 String itemValue = (String) listView.getItemAtPosition(position);
 
+                if(partialRecipes.contains((String) listView.getItemAtPosition(position))){
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?z=10&q=ABC Liquor Store");
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+
 //                Toast.makeText(getApplicationContext(),
 //                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
 //                        .show();
@@ -86,7 +96,7 @@ public class lookup_results extends AppCompatActivity {
         String[] jackandsprite =  {"Whiskey", "Sprite", "Lime"};
         String[] names = {"Whiskey and Coke", "Jack and Sprite"};
         ArrayList<String[]> recipes = new ArrayList<>();
-        ArrayList<String> partialRecipes = new ArrayList<>();
+        partialRecipes = new ArrayList<>();
         ArrayList<String> possibleRecipes = new ArrayList<>();
         recipes.add(whiskeyandcoke);
         recipes.add(jackandsprite);
