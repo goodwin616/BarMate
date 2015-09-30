@@ -1,10 +1,6 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -15,8 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,32 +22,40 @@ import java.util.HashMap;
 public class lookup_results extends AppCompatActivity {
 
     ListView listView;
-
-    ArrayList<String> partialRecipes = new ArrayList<>();
     ArrayList<Recipe> results = new ArrayList<>();
+    ArrayList<String> selections = new ArrayList<>();
+    boolean partial;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setTitle("The results are in!");
 
 
         setContentView(R.layout.activity_lookup_results);
         listView = (ListView) findViewById(R.id.list_results);
 
-        Bundle bundle = getIntent().getExtras();
-        boolean partial = bundle.getBoolean("partial");
 
-        if (bundle.getStringArrayList("selections") != null && !bundle.getStringArrayList("selections").isEmpty()) {
-            try {
-                results = possibleRecipes(bundle.getStringArrayList("selections"), partial);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // results.add("No matches, try again?");
+        if (savedInstanceState != null) {
+            partial = savedInstanceState.getBoolean("partial");
+            selections = savedInstanceState.getStringArrayList("selections");
         }
+        else {
+            Bundle bundle = getIntent().getExtras();
+            partial = bundle.getBoolean("partial");
 
+            if (bundle.getStringArrayList("selections") != null && !bundle.getStringArrayList("selections").isEmpty()) {
+                selections = bundle.getStringArrayList("selections");
+                try {
+                    results = possibleRecipes(bundle.getStringArrayList("selections"), partial);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // results.add("No matches, try again?");
+            }
+        }
         // Fill array of matching results
         String[] resultArray = new String[results.size()];
         for (int i = 0; i < results.size(); i++) {
@@ -87,37 +89,9 @@ public class lookup_results extends AppCompatActivity {
                     intent.putStringArrayListExtra("ingredients", passIngredients);
                     startActivity(intent);
                 }
-
-
-
-
-
-
-//                if (partialRecipes.contains(listView.getItemAtPosition(position))) {
-//                    Uri gmmIntentUri = Uri.parse("geo:0,0?z=10&q=ABC Liquor Store");
-//                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                    mapIntent.setPackage("com.google.android.apps.maps");
-//                    startActivity(mapIntent);
-//                }
-
-//                Toast.makeText(getApplicationContext(),
-//                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-//                        .show();
             }
 
         });
-
-        TextView gpsLat = (TextView) findViewById(R.id.gpsLocationLatitude);
-        TextView gpsLong = (TextView) findViewById(R.id.gpsLocationLongitude);
-
-
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = LocationManager.NETWORK_PROVIDER;
-
-        Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-        gpsLat.setText("Your latitude is " + lastKnownLocation.getLatitude());
-        gpsLong.setText("Your longitude is " + lastKnownLocation.getLongitude());
-
 
     }
 
@@ -134,30 +108,30 @@ public class lookup_results extends AppCompatActivity {
 
         InputStream recipeFile = getResources().openRawResource(R.raw.drinklist);
         BufferedReader reader = new BufferedReader(new InputStreamReader(recipeFile));
-        String line = reader.readLine();
-        while (line != null) {
+        String line = "";
+        while ((line = reader.readLine()) != null) {
             String recipeName = line;
             ArrayList<String> itemList = new ArrayList<>();
             line = reader.readLine();
             while (line.compareTo("=") != 0) {
+                System.out.println(line + " is not =");
                 itemList.add(line);
                 line = reader.readLine();
             }
+            System.out.println(line + "is =");
 
             ArrayList<Ingredient> ingredientOfRecipe = new ArrayList<>();
 
             int counter = 2;
             for (String s : itemList) {
-                String[] item = s.split("@", 2);
-                String presentIngredient = item[1] + " ~ " + item[0];
-
-
-                if (!possibleIngredients.containsKey(item[0])) {
-                    counter--;
-                    ingredientOfRecipe.add(new Ingredient(presentIngredient, false));
-                } else {
-                    ingredientOfRecipe.add(new Ingredient(presentIngredient, true));
-                }
+                    String[] item = s.split("@", 2);
+                    String presentIngredient =  item[1] + " ~ " + item[0];
+                    if (!possibleIngredients.containsKey(item[0])) {
+                        counter--;
+                        ingredientOfRecipe.add(new Ingredient(presentIngredient, false));
+                    } else {
+                        ingredientOfRecipe.add(new Ingredient(presentIngredient, true));
+                    }
             }
 
             if (counter >= 1) {
@@ -175,6 +149,17 @@ public class lookup_results extends AppCompatActivity {
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
@@ -186,6 +171,19 @@ public class lookup_results extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("partial", partial);
+        savedInstanceState.putStringArrayList("selections", selections);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        partial = savedInstanceState.getBoolean("partial");
+        selections = savedInstanceState.getStringArrayList("selections");
+    }
 
 
 

@@ -7,24 +7,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class Good_Recipe extends AppCompatActivity {
 
     ListView listView;
+    TextView nameOfDrink;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good__recipe);
-
-        setContentView(R.layout.activity_lookup_results);
         listView = (ListView) findViewById(R.id.ingredientstToDisplay);
+        nameOfDrink = (TextView) findViewById(R.id.drinkName);
+
 
         Bundle bundle = getIntent().getExtras();
         String drinkName = bundle.getString("name");
+        nameOfDrink.setText(drinkName);
+
         ArrayList<String> listOfIngredients = bundle.getStringArrayList("ingredients");
 
         String[] resultArray = new String[listOfIngredients.size()];
@@ -52,7 +56,6 @@ public class Good_Recipe extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                finish();
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
         }

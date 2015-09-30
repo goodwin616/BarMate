@@ -58,7 +58,7 @@ Lime@1
 Colorado Bulldog
 Vodka@1 shot
 Kahlua Coffee Liqueur@1 shot
-Milk
+Milk@1 splash
 Coke@1 splash
 =
 Cosmopolitan Cocktail
@@ -70,10 +70,10 @@ Cranberry Juice@1/2 oz
 Cuba Libre
 Light Rum@2 oz
 Limes@Juice of 1/2
-Coke
+Coke@
 =
 Doctor Pepper
-Draft Beer
+Draft Beer@
 Bacardi 151 Rum@1/4 oz
 Amaretto@3/4 oz
 =
@@ -93,7 +93,7 @@ Rose's Lime Juice@1 oz
 Lime@1 twist
 =
 Godiva Chocolate Martini
-Godiva Chocolate Liqueur 1 1/2 shots
+Godiva Chocolate Liqueur@1 1/2 shots
 Creme de Cacao@1 1/2 shots
 Vodka@1/2 shot
 Half-and-Half@2 1/2 shots
@@ -117,8 +117,8 @@ Jello Shots
 Watermelon Jell-O@1 package
 Water@1 cup
 Malibu Coconut Rum@1 cup
-Kamikaze
 =
+Kamikaze
 Vodka@1.25 oz
 Triple Sec@0.25 oz
 Lime Juice@0.25 oz
@@ -153,8 +153,8 @@ Mai Tai
 Light Rum@1 oz
 Creme de Almond@1/2 oz
 Triple Sec@1/2 oz
-Sour Mix
-Pineapple Juice
+Sour Mix@
+Pineapple Juice@
 Dark Rum@1/2 oz
 =
 Margarita Cocktail
@@ -216,7 +216,7 @@ Spiced Rum@0.75 oz
 Blackberry Liqueur@0.25 oz
 Creme de Bananes@0.25 oz
 Orange Juice@2 oz
-Ice@8 ozcrushed
+Ice@8 oz crushed
 =
 Salty Dog
 Grapefruit Juice@5 oz
@@ -237,13 +237,13 @@ Orange Juice@2 oz
 Singapore Sling
 Grenadine Syrup@1/2 oz
 Gin@1 oz
-Sour Mix
-Club Soda
+Sour Mix@
+Club Soda@
 Cherry Brandy@1/2 oz
 =
 Sloe Comfortable Screw
 Sloe Gin@3 oz
-Southern Comfort Peach Liqueur 3 oz
+Southern Comfort Peach Liqueur@3 oz
 Orange Juice@3 oz
 Vodka@3 oz
 =

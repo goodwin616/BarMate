@@ -15,8 +15,10 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
@@ -58,11 +60,11 @@ public class MainActivity extends Activity {
 
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         InputStream ingredientFile = getResources().openRawResource(R.raw.ingredients);
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(ingredientFile));
-//        String line = reader.readLine();
-//        while (line != null) {
-//            ingredientList.add(new Ingredient(line));
-//        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(ingredientFile));
+        String line  = "";
+        while ((line = reader.readLine()) != null) {
+            ingredientList.add(new Ingredient(line));
+       }
         dataAdapter = new MyCustomAdapter(this,
                 R.layout.activity_main, ingredientList);
         ListView listView = (ListView) findViewById(R.id.listView1);
