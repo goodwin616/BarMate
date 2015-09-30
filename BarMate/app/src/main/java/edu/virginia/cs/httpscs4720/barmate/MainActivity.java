@@ -9,14 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
@@ -29,36 +29,56 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        displayListView();
+        try {
+            displayListView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         checkButtonClick();
 
     }
 
-    private void displayListView() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void displayListView() throws IOException {
 
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
-        ingredientList.add(new Ingredient("Whiskey"));
-        ingredientList.add(new Ingredient("Coca Cola"));
-        ingredientList.add(new Ingredient("Sprite"));
-        ingredientList.add(new Ingredient("Lime"));
-
+        InputStream ingredientFile = getResources().openRawResource(R.raw.ingredients);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(ingredientFile));
+//        String line = reader.readLine();
+//        while (line != null) {
+//            ingredientList.add(new Ingredient(line));
+//        }
         dataAdapter = new MyCustomAdapter(this,
                 R.layout.activity_main, ingredientList);
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(dataAdapter);
 
 
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // When clicked, show a toast with the TextView text
-                Ingredient item = (Ingredient) parent.getItemAtPosition(position);
-//                Toast.makeText(getApplicationContext(),
-//                        "Clicked on Row: " + item,
-//                        Toast.LENGTH_LONG).show();
-            }
-        });
+//        listView.setOnItemClickListener(new OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//                // When clicked, show a toast with the TextView text
+//                Ingredient item = (Ingredient) parent.getItemAtPosition(position);
+////                Toast.makeText(getApplicationContext(),
+////                        "Clicked on Row: " + item,
+////                        Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 
@@ -85,7 +105,7 @@ public class MainActivity extends Activity {
             Log.v("ConvertView", String.valueOf(position));
 
             if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater)getSystemService(
+                LayoutInflater vi = (LayoutInflater) getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
                 convertView = vi.inflate(R.layout.ingredient_layout, null);
 
@@ -94,9 +114,9 @@ public class MainActivity extends Activity {
                 holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
                 convertView.setTag(holder);
 
-                holder.name.setOnClickListener( new View.OnClickListener() {
+                holder.name.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        CheckBox cb = (CheckBox) v ;
+                        CheckBox cb = (CheckBox) v;
                         Ingredient item = (Ingredient) cb.getTag();
 //                        Toast.makeText(getApplicationContext(),
 //                                "Clicked on Checkbox: " + cb.getText() +
@@ -105,8 +125,7 @@ public class MainActivity extends Activity {
                         item.setSelected(cb.isChecked());
                     }
                 });
-            }
-            else {
+            } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
@@ -122,7 +141,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public void onCheckboxClicked (View view) {
+    public void onCheckboxClicked(View view) {
         partialCheck = ((CheckBox) view).isChecked();
     }
 
@@ -132,8 +151,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-
-
                 Intent intent;
                 intent = new Intent(MainActivity.this, lookup_results.class);
 

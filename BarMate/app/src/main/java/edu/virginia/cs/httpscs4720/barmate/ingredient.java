@@ -14,6 +14,12 @@ public class Ingredient {
         this.selected = false;
     }
 
+    public Ingredient(String name, boolean selected) {
+        super();
+        this.name = name;
+        this.selected = selected;
+    }
+
     public String getName() {
         return name;
     }

@@ -6,4 +6,5 @@
     <string name="title_activity_lookup_results">lookup_results</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_good__recipe">Your Recipe</string>
 </resources>
