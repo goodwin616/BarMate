@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,22 +39,35 @@ public class lookup_results extends AppCompatActivity {
 
 
         if (savedInstanceState != null) {
+            System.out.println("savedInstanceState != null");
             partial = savedInstanceState.getBoolean("partial");
             selections = savedInstanceState.getStringArrayList("selections");
+            try {
+                results = possibleRecipes(savedInstanceState.getStringArrayList("selections"), partial);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         else {
             Bundle bundle = getIntent().getExtras();
-            partial = bundle.getBoolean("partial");
 
-            if (bundle.getStringArrayList("selections") != null && !bundle.getStringArrayList("selections").isEmpty()) {
-                selections = bundle.getStringArrayList("selections");
-                try {
-                    results = possibleRecipes(bundle.getStringArrayList("selections"), partial);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if(bundle != null) {
+                partial = bundle.getBoolean("partial");
+
+                if (bundle.getStringArrayList("selections") != null && !bundle.getStringArrayList("selections").isEmpty()) {
+                    selections = bundle.getStringArrayList("selections");
+                    try {
+                        results = possibleRecipes(bundle.getStringArrayList("selections"), partial);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // results.add("No matches, try again?");
                 }
-            } else {
-                // results.add("No matches, try again?");
+            }
+            else{
+                System.out.println("bundle is null");
+                finish();
             }
         }
         // Fill array of matching results
@@ -114,11 +128,11 @@ public class lookup_results extends AppCompatActivity {
             ArrayList<String> itemList = new ArrayList<>();
             line = reader.readLine();
             while (line.compareTo("=") != 0) {
-                System.out.println(line + " is not =");
+               //System.out.println(line + " is not =");
                 itemList.add(line);
                 line = reader.readLine();
             }
-            System.out.println(line + "is =");
+            //System.out.println(line + "is =");
 
             ArrayList<Ingredient> ingredientOfRecipe = new ArrayList<>();
 
@@ -151,7 +165,7 @@ public class lookup_results extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        System.out.println("onPause called");
     }
 
     @Override
@@ -172,8 +186,9 @@ public class lookup_results extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        System.out.println("onSaveInstanceState");
         savedInstanceState.putBoolean("partial", partial);
         savedInstanceState.putStringArrayList("selections", selections);
     }
@@ -181,6 +196,7 @@ public class lookup_results extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        System.out.println("onRestoreInstanceState");
         partial = savedInstanceState.getBoolean("partial");
         selections = savedInstanceState.getStringArrayList("selections");
     }
