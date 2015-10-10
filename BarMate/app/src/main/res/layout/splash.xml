@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="@raw/cocktail"
+    android:layout_height="match_parent" android:background="@raw/cocktail1"
     android:clickable="false">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@color/primary_text_default_material_light"
-        android:text="@string/welcome_message"
-        android:id="@+id/textView2"
-        android:layout_gravity="center"
-        android:textColor="#e8e8e8"
-        android:textSize="@dimen/abc_text_size_display_1_material"
-        android:textStyle="bold"
-        android:textColorHighlight="@color/abc_primary_text_material_dark"
-        android:layout_marginTop="@dimen/abc_text_size_large_material" />
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/abc_dialog_padding_top_material" />
 </LinearLayout>
