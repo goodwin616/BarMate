@@ -1,6 +1,7 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
 import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class lookup_results extends AppCompatActivity {
+public class lookup_results extends Activity {
 
     ListView listView;
     ArrayList<Recipe> results = new ArrayList<>();

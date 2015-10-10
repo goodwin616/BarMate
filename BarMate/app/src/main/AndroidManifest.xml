@@ -3,13 +3,14 @@
     package="edu.virginia.cs.httpscs4720.barmate" >
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-sdk android:targetSdkVersion="21"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:largeHeap="true"
         android:label="BarMate"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MaterialTheme" >
 
         <activity
             android:name=".SplashScreen"

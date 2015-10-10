@@ -1,6 +1,7 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
 import android.content.Intent;
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class Good_Recipe extends AppCompatActivity {
+public class Good_Recipe extends Activity {
 
     ListView listView;
     TextView nameOfDrink;
