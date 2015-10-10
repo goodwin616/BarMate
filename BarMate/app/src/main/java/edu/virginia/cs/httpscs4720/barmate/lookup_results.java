@@ -1,10 +1,10 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -91,16 +91,11 @@ public class lookup_results extends Activity {
                 intent.putExtra("name", selectedRecipe.getName());
                 ArrayList<String> passIngredients = new ArrayList<>();
                 for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
-
-
-
                     passIngredients.add(selectedRecipe.getIngredients().get(i).getName());
                 }
                 intent.putStringArrayListExtra("ingredients", passIngredients);
                 intent.putExtra("partial", selectedRecipe.isPartial());
                 startActivity(intent);
-
-
             }
 
         });

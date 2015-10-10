@@ -70,7 +70,6 @@ public class MainActivity extends Activity {
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(dataAdapter);
 
-
 //        listView.setOnItemClickListener(new OnItemClickListener() {
 //            public void onItemClick(AdapterView<?> parent, View view,
 //                                    int position, long id) {
@@ -120,13 +119,18 @@ public class MainActivity extends Activity {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
                         Ingredient item = (Ingredient) cb.getTag();
-//                        Toast.makeText(getApplicationContext(),
-//                                "Clicked on Checkbox: " + cb.getText() +
-//                                        " is " + cb.isChecked(),
-//                                Toast.LENGTH_LONG).show();
                         item.setSelected(cb.isChecked());
                     }
                 });
+
+                holder.code.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+//                        TextView cb = (TextView) v;
+//                        Ingredient item = (Ingredient) cb.getTag();
+//                        item.setSelected(cb.isChecked());
+                    }
+                });
+
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
@@ -173,20 +177,6 @@ public class MainActivity extends Activity {
 
 
                 startActivity(intent);
-
-//                StringBuffer responseText = new StringBuffer();
-//                responseText.append("The following were selected...\n");
-//
-//                for(int i=0;i<ingredientList.size();i++){
-//                    Ingredient item = ingredientList.get(i);
-//                    if(item.isSelected()){
-//                        responseText.append("\n" + item.getName());
-//                    }
-//                }
-//
-//                Toast.makeText(getApplicationContext(),
-//                        responseText, Toast.LENGTH_LONG).show();
-
             }
         });
 
