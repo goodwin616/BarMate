@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -154,6 +153,7 @@ public class lookup_results extends AppCompatActivity {
                     recipes.add(new Recipe(recipeName, ingredientOfRecipe, false));
                     //Partial Recipe
                 else if (counter == 1 && partial)
+                    recipeName = recipeName + " (Missing 1 ingredient!)";
                     recipes.add(new Recipe(recipeName, ingredientOfRecipe, true));
             }
 
