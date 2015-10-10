@@ -1,11 +1,15 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,7 +45,48 @@ public class Good_Recipe extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, android.R.id.text1, resultArray);
 
         listView.setAdapter(adapter);
+        setButton(bundle.getBoolean("partial"));
 
+
+
+    }
+
+    public void setButton(boolean partial) {
+        Button myButton = (Button) findViewById(R.id.optionButton);
+        if (partial) {
+            myButton.setText("Find a nearby ABC Store");
+            myButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?z=10&q=ABC Liquor Store");
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            });
+
+        }
+        else {
+            myButton.setText("Take a photo of your cocktail!");
+            myButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Take a photo
+
+                }
+            });
+//            Intent imageIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//
+//            File imagesFolder = new File(Environment.getExternalStorageDirectory(), "MyImages");
+//            imagesFolder.mkdirs();
+//
+//            File image = new File(imagesFolder, "QR_" + timeStamp + ".png");
+//            Uri uriSavedImage = Uri.fromFile(image);
+//
+//            imageIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+//            startActivityForResult(imageIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
     }
 
     @Override

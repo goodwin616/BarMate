@@ -1,7 +1,6 @@
 package edu.virginia.cs.httpscs4720.barmate;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -86,22 +85,21 @@ public class lookup_results extends AppCompatActivity {
                                     int position, long id) {
 
                 Recipe selectedRecipe = results.get(position);
-                if (selectedRecipe.isPartial()) {
-                    Uri gmmIntentUri = Uri.parse("geo:0,0?z=10&q=ABC Liquor Store");
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps");
-                    startActivity(mapIntent);
+
+                Intent intent = new Intent(lookup_results.this, Good_Recipe.class);
+                intent.putExtra("name", selectedRecipe.getName());
+                ArrayList<String> passIngredients = new ArrayList<>();
+                for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
+
+
+
+                    passIngredients.add(selectedRecipe.getIngredients().get(i).getName());
                 }
-                else {
-                    Intent intent = new Intent(lookup_results.this, Good_Recipe.class);
-                    intent.putExtra("name", selectedRecipe.getName());
-                    ArrayList<String> passIngredients = new ArrayList<>();
-                    for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
-                        passIngredients.add(selectedRecipe.getIngredients().get(i).getName());
-                    }
-                    intent.putStringArrayListExtra("ingredients", passIngredients);
-                    startActivity(intent);
-                }
+                intent.putStringArrayListExtra("ingredients", passIngredients);
+                intent.putExtra("partial", selectedRecipe.isPartial());
+                startActivity(intent);
+
+
             }
 
         });
@@ -134,13 +132,15 @@ public class lookup_results extends AppCompatActivity {
             //System.out.println(line + "is =");
 
             ArrayList<Ingredient> ingredientOfRecipe = new ArrayList<>();
-
+            String missingIngredient;
+            missingIngredient = "";
             int counter = 2;
             for (String s : itemList) {
                     String[] item = s.split("@", 2);
                     String presentIngredient =  item[1] + " ~ " + item[0];
                     if (!possibleIngredients.containsKey(item[0])) {
                         counter--;
+                        missingIngredient = item[0];
                         ingredientOfRecipe.add(new Ingredient(presentIngredient, false));
                     } else {
                         ingredientOfRecipe.add(new Ingredient(presentIngredient, true));
@@ -148,13 +148,13 @@ public class lookup_results extends AppCompatActivity {
             }
 
             if (counter >= 1) {
-                //Good Recipe
-                if (counter > 1)
-                    recipes.add(new Recipe(recipeName, ingredientOfRecipe, false));
-                    //Partial Recipe
-                else if (counter == 1 && partial)
-                    recipeName = recipeName + " (Missing 1 ingredient!)";
+                if (counter == 1 && partial) {
+                    recipeName = recipeName + " (Missing 1 ingredient: " + missingIngredient + ")";
                     recipes.add(new Recipe(recipeName, ingredientOfRecipe, true));
+                }
+                else if (counter > 1) {
+                    recipes.add(new Recipe(recipeName, ingredientOfRecipe, false));
+                }
             }
 
         }
