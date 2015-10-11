@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
 
             Ingredient item = ingredientList.get(position);
             holder.code.setText("");
-            holder.name.setText(item.getName());
+            holder.name.setText(item.getName() + "                                                                                                                                                                                                                                                ");
             holder.name.setChecked(item.isSelected());
             holder.name.setTag(item);
 
