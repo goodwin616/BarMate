@@ -4,12 +4,13 @@
     android:layout_height="match_parent" android:background="@raw/cocktail1"
     android:clickable="false"
 >
+
     <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp" />
+        android:layout_marginBottom="126dp" />
 </RelativeLayout>

@@ -13,6 +13,7 @@ public class SplashScreen extends Activity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        this.getActionBar().hide();
 
         Thread timerThread = new Thread(){
             public void run(){
