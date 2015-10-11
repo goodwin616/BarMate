@@ -12,7 +12,9 @@
         android:layout_alignParentLeft="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:text="CheckBox" />
+        android:text="CheckBox"
+        android:padding="10dp"
+        android:textSize="@dimen/abc_text_size_subhead_material" />
 
     <TextView
         android:id="@+id/code"

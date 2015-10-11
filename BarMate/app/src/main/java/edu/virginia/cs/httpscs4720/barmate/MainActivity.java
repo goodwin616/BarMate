@@ -30,13 +30,12 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setTitle("What do you have in your wetbar?");
         try {
             displayListView();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.getActionBar().hide();
         checkButtonClick();
 
     }
