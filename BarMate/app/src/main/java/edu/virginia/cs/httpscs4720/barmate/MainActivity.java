@@ -23,7 +23,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    ArrayList<Ingredient> ingredientList;
     MyCustomAdapter dataAdapter = null;
+
     boolean partialCheck;
 
     @Override
@@ -31,6 +33,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("What do you have in your wetbar?");
+        ingredientList = new ArrayList<>();
+
+        if (savedInstanceState != null) {
+            String[] names = savedInstanceState.getStringArray("names");
+            boolean[] checked = savedInstanceState.getBooleanArray("checked");
+
+            for (int i = 0; i < names.length; i++) {
+                ingredientList.add(new Ingredient(names[i], checked[i]));
+            }
+        }
+
         try {
             displayListView();
         } catch (IOException e) {
@@ -56,18 +69,18 @@ public class MainActivity extends Activity {
     }
 
     private void displayListView() throws IOException {
-
-        ArrayList<Ingredient> ingredientList = new ArrayList<>();
-        InputStream ingredientFile = getResources().openRawResource(R.raw.ingredients);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(ingredientFile));
-        String line  = "";
-        while ((line = reader.readLine()) != null) {
-            ingredientList.add(new Ingredient(line));
-       }
-        dataAdapter = new MyCustomAdapter(this,
-                R.layout.activity_main, ingredientList);
-        ListView listView = (ListView) findViewById(R.id.listView1);
-        listView.setAdapter(dataAdapter);
+        if (ingredientList.isEmpty()) {
+            InputStream ingredientFile = getResources().openRawResource(R.raw.ingredients);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(ingredientFile));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                ingredientList.add(new Ingredient(line));
+            }
+        }
+            dataAdapter = new MyCustomAdapter(this,
+                    R.layout.activity_main, ingredientList);
+            ListView listView = (ListView) findViewById(R.id.listView1);
+            listView.setAdapter(dataAdapter);
 
 //        listView.setOnItemClickListener(new OnItemClickListener() {
 //            public void onItemClick(AdapterView<?> parent, View view,
@@ -79,6 +92,7 @@ public class MainActivity extends Activity {
 ////                        Toast.LENGTH_LONG).show();
 //            }
 //        });
+
 
     }
 
@@ -179,6 +193,26 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    public void onSaveInstanceState(Bundle savedState) {
+        super.onSaveInstanceState(savedState);
+        System.out.println("saved instance state called");
+
+        ingredientList = dataAdapter.ingredientList;
+
+
+        String[] names = new String[ingredientList.size()];
+        boolean[] checked = new boolean[ingredientList.size()];
+
+
+        for (int i = 0; i < ingredientList.size(); i++) {
+            names[i] = ingredientList.get(i).getName();
+            checked[i] = ingredientList.get(i).isSelected();
+        }
+        
+        savedState.putStringArray("names", names);
+        savedState.putBooleanArray("checked", checked);
     }
 
 }
