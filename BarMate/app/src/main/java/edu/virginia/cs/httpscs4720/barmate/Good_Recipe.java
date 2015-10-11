@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -13,20 +14,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.util.Log;
-import android.os.Environment;
-import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.io.IOException;
 
 public class Good_Recipe extends Activity {
 
     ListView listView;
     TextView nameOfDrink;
+    TextView recipeInstructionsView;
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
 
@@ -37,11 +36,15 @@ public class Good_Recipe extends Activity {
         setContentView(R.layout.activity_good__recipe);
         listView = (ListView) findViewById(R.id.ingredientstToDisplay);
         nameOfDrink = (TextView) findViewById(R.id.drinkName);
+        recipeInstructionsView = (TextView) findViewById(R.id.recipeInstructions);
 
 
         Bundle bundle = getIntent().getExtras();
         String drinkName = bundle.getString("name");
         nameOfDrink.setText(drinkName);
+        String recipeInstructions = bundle.getString("instructions");
+        recipeInstructionsView.setText(recipeInstructions);
+
 
         ArrayList<String> listOfIngredients = bundle.getStringArrayList("ingredients");
 

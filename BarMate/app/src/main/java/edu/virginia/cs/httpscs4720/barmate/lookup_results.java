@@ -2,7 +2,6 @@ package edu.virginia.cs.httpscs4720.barmate;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
@@ -89,6 +88,7 @@ public class lookup_results extends Activity {
 
                 Intent intent = new Intent(lookup_results.this, Good_Recipe.class);
                 intent.putExtra("name", selectedRecipe.getName());
+                intent.putExtra("instructions", selectedRecipe.getRecipeInstructions());
                 ArrayList<String> passIngredients = new ArrayList<>();
                 for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
                     passIngredients.add(selectedRecipe.getIngredients().get(i).getName());
@@ -113,12 +113,14 @@ public class lookup_results extends Activity {
             possibleIngredients.put(s, s);
         }
 
-        InputStream recipeFile = getResources().openRawResource(R.raw.drinklist);
+        InputStream recipeFile = getResources().openRawResource(R.raw.drinklistrecipes);
         BufferedReader reader = new BufferedReader(new InputStreamReader(recipeFile));
         String line = "";
         while ((line = reader.readLine()) != null) {
             String recipeName = line;
             ArrayList<String> itemList = new ArrayList<>();
+            line = reader.readLine();
+            String recipeInstructions = line;
             line = reader.readLine();
             while (line.compareTo("=") != 0) {
                //System.out.println(line + " is not =");
@@ -146,10 +148,10 @@ public class lookup_results extends Activity {
             if (counter >= 1) {
                 if (counter == 1 && partial) {
                     recipeName = recipeName + " (Missing 1 ingredient: " + missingIngredient + ")";
-                    recipes.add(new Recipe(recipeName, ingredientOfRecipe, true));
+                    recipes.add(new Recipe(recipeName, ingredientOfRecipe, true, recipeInstructions));
                 }
                 else if (counter > 1) {
-                    recipes.add(new Recipe(recipeName, ingredientOfRecipe, false));
+                    recipes.add(new Recipe(recipeName, ingredientOfRecipe, false, recipeInstructions));
                 }
             }
 

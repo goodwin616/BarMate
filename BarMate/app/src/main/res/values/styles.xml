@@ -5,7 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="MaterialTheme" parent="android:Theme.Material">
+    <style name="MaterialTheme" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/primary_light</item>
+
 
 
     </style>
