@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 public class lookup_results extends Activity {
 
     ListView listView;
+    Button abcButton;
     ArrayList<Recipe> results = new ArrayList<>();
     ArrayList<String> selections = new ArrayList<>();
     boolean partial;
@@ -28,6 +30,8 @@ public class lookup_results extends Activity {
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //abcButton = (Button) findViewById(R.id.abcButton);
+        //abcButton.setVisibility(View.GONE);
 
         setTitle("The results are in!");
 
@@ -74,31 +78,46 @@ public class lookup_results extends Activity {
             resultArray[i] = results.get(i).getName();
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, resultArray);
+        if (results.isEmpty()) {
+ //           abcButton.setVisibility(View.VISIBLE);
+            setTitle("No combinations found");
+//            abcButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Uri gmmIntentUri = Uri.parse("geo:0,0?z=10&q=ABC Liquor Store");
+//                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                    mapIntent.setPackage("com.google.android.apps.maps");
+//                    startActivity(mapIntent);
+//                }
+//            });
+        }
+        else {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, resultArray);
 
-        listView.setAdapter(adapter);
+            listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            listView.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
 
-                Recipe selectedRecipe = results.get(position);
+                    Recipe selectedRecipe = results.get(position);
 
-                Intent intent = new Intent(lookup_results.this, Good_Recipe.class);
-                intent.putExtra("name", selectedRecipe.getName());
-                intent.putExtra("instructions", selectedRecipe.getRecipeInstructions());
-                ArrayList<String> passIngredients = new ArrayList<>();
-                for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
-                    passIngredients.add(selectedRecipe.getIngredients().get(i).getName());
+                    Intent intent = new Intent(lookup_results.this, Good_Recipe.class);
+                    intent.putExtra("name", selectedRecipe.getName());
+                    intent.putExtra("instructions", selectedRecipe.getRecipeInstructions());
+                    ArrayList<String> passIngredients = new ArrayList<>();
+                    for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
+                        passIngredients.add(selectedRecipe.getIngredients().get(i).getName());
+                    }
+                    intent.putStringArrayListExtra("ingredients", passIngredients);
+                    intent.putExtra("partial", selectedRecipe.isPartial());
+                    startActivity(intent);
                 }
-                intent.putStringArrayListExtra("ingredients", passIngredients);
-                intent.putExtra("partial", selectedRecipe.isPartial());
-                startActivity(intent);
-            }
 
-        });
+            });
+        }
 
     }
 
@@ -198,7 +217,6 @@ public class lookup_results extends Activity {
         partial = savedInstanceState.getBoolean("partial");
         selections = savedInstanceState.getStringArrayList("selections");
     }
-
 
 
 
