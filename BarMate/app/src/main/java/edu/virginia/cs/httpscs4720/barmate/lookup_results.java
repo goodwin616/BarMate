@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
@@ -22,7 +21,6 @@ import java.util.HashMap;
 public class lookup_results extends Activity {
 
     ListView listView;
-    Button abcButton;
     ArrayList<Recipe> results = new ArrayList<>();
     ArrayList<String> selections = new ArrayList<>();
     boolean partial;
@@ -78,18 +76,8 @@ public class lookup_results extends Activity {
             resultArray[i] = results.get(i).getName();
         }
 
-        if (results.isEmpty()) {
- //           abcButton.setVisibility(View.VISIBLE);
+        if (resultArray.length == 0) {
             setTitle("No combinations found");
-//            abcButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Uri gmmIntentUri = Uri.parse("geo:0,0?z=10&q=ABC Liquor Store");
-//                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                    mapIntent.setPackage("com.google.android.apps.maps");
-//                    startActivity(mapIntent);
-//                }
-//            });
         }
         else {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
